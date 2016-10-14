@@ -7,6 +7,7 @@
  */
 
 require 'vendor/autoload.php';
+$phpWord = new \PhpOffice\PhpWord\PhpWord();
 
 $options = getopts();
 
@@ -30,12 +31,9 @@ if(!isset($options['d'])) {
     }
 }
 
-// Save the output path or assume current directory
-$outputPath = isset($options['o'] ? $options['o'] : __DIR__;
-
 // Check we can write to this directory
-if(!is_writeable($outputPath)) {
-    die('Output path ('.$outputPath.') is not writeable');
+if(!is_writeable(__DIR__)) {
+    die('Output path is not writeable');
 }
 
 // Load the template
@@ -73,10 +71,14 @@ for($i=1; $i<count($csv); $i++) {
     for($j=0; $j<count($headers); $j++) {
         $template->setValue($headers[$j], $csv[$i][$j]);
     }
-    $fileName = $csv[$i][$outputColumn].'.docx';
-    $filePath = $outputPath . $fileName;
-    $template->saveAs($filePath);
-    echo "Saving file as: $fileName\n";
+    $fileName = $csv[$i][$outputColumn];
+    if(!isset($options['p'])) {
+        $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'PDF');
+        $objWriter->save($fileName.'.pdf');
+    } else {
+        $template->saveAs($fileName.'.docx');
+        echo "Saving file as: $fileName\n";
+    }
 }
 
 echo 'Done!';
