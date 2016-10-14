@@ -1,0 +1,5 @@
+vendor/
+Filler.app
+.DS_Store
+template.docx
+out/
