@@ -6,4 +6,7 @@ Creates a set of Word documents based on a supplied template document and CSV fi
 `composer install`
 
 ## Usage
-`php filler.php -t template.docx -d data.csv -o out/`
+`php filler.php -t template.docx -d data.csv`
+
+### Options
+p - Save as a PDF
